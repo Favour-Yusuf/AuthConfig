@@ -1,18 +1,24 @@
-import express, { Application, NextFunction, Request, Response } from "express";
-import cors from "cors";
-// import route from "../routes/routes";
+import express, { Application, Request, Response, NextFunction } from "express";
 import morgan from "morgan";
+import cors from "cors";
+import userRouter from "../Router/user.route";
+import productRouter from "../Router/product.route";
+// import { errorHandler } from "./middlewares/errorhandler";
+// import { AppError, HttpCode } from "./utils/AppError";
 import { errorHandler } from "../Middlewares/errorhandler";
-import { AppError, HttpCode } from "../Utils/AppError";
+import { AppError, HttpCode } from "../utils/AppError";
 
-export default function appConfig(app: Application) {
+export const appConfig = (app: Application) => {
+  // middleware configuration
   app
     .use(express.json())
     .use(cors())
     .use(morgan("dev"))
 
     // router configuration
-    // .use("/api", route);
+    .use("/api", userRouter)
+    .use("/api/product", productRouter)
+
     .all("*", (req: Request, res: Response, next: NextFunction) => {
       next(
         new AppError({
@@ -23,6 +29,6 @@ export default function appConfig(app: Application) {
       );
     })
 
-    // error handlers; note: it should be the last middleware in your app.
+    // error handlers; note: it should be the last in your app
     .use(errorHandler);
-}
+};

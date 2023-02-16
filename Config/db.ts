@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const localUrl: string = "mongodb://localhost/auth2";
 const cloudUrl: string = "";
 
-const dbFuction = async (): Promise<void> => {
+export const dbFunction = async (): Promise<void> => {
   try {
     const connect = await mongoose.connect(localUrl);
     console.log("connected to", connect.connection.host);
@@ -12,4 +12,4 @@ const dbFuction = async (): Promise<void> => {
   }
 };
 
-export default dbFuction;
+// export default dbFunction;
